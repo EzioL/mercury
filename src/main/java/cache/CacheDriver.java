@@ -47,7 +47,19 @@ public class CacheDriver {
             .next(table -> {
                 return Resp.assertion(getTableJson(table), "获取表格数据失败");
             })
+            .next(jsonObject -> {
+                if (jsonObject.get(key).getAsString() == null) {
 
+                }
+
+                // 新建的时候 写入数据
+
+                // 更新的时候 更新数据
+
+                jsonObject.addProperty(key, value);
+
+                return Resp.success("ok");
+            })
         ;
     }
 
@@ -84,7 +96,7 @@ public class CacheDriver {
     /**
      * 新建表格
      */
-    public static void newTable(String table) throws Exception {
+    public static void newTable(String table) {
 
         File tableFile = new File(DB + "/" + table + ".json");
         if (tableFile.exists()) {
@@ -93,7 +105,7 @@ public class CacheDriver {
         try {
             tableFile.createNewFile();
             FileOutputStream out = new FileOutputStream(tableFile, true);
-            out.write("{}".getBytes("utf-8"));
+            out.write("{\r\n}".getBytes("utf-8"));
             out.close();
         } catch (IOException e) {
             e.printStackTrace();

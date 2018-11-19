@@ -7,10 +7,10 @@ package enmus;
 public enum CommandType {
 
     HELLO("$HELLO", "Welcome to Mercury"),
-    NEW_TABLE("$NEW_TABLE", ""),
-    DEL_TABLE("$DEL_TABLE", ""),
     SET("$SET", ""),
-    GET("$GET", ""),;
+    GET("$GET", ""),
+    DELETE("$DELETE", ""),
+    ;
 
     private String cmd;
     private String desc;

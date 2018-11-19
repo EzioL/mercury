@@ -12,11 +12,12 @@ import java.util.List;
  * Here be dragons
  * Created by haotian on 2018/11/12 12:22 PM
  */
-public class CommandService {
+public class CacheCommandService {
 
     public static final String CMD_HEADER = "*";
 
     public String getResponse(List<String> cmds) {
+
         if (cmds == null || cmds.size() == 0) {
             throw new CacheException("未知命令");
         }
@@ -33,7 +34,7 @@ public class CommandService {
 
     public String getResponse(InputStream inputStream) {
 
-        CacheDriver cacheDriver = new CacheDriver();
+        LocalDriver cacheDriver = new LocalDriver();
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
         //读取客户端发送来的消息
@@ -48,49 +49,34 @@ public class CommandService {
                 return CommandType.HELLO.getDesc();
             }
 
-            if (line.equals(CommandType.NEW_TABLE.getCmd())) {
-                line = reader.readLine();
-                if (line != null && !line.equals("")) {
-                    CacheDriver.newTable(line);
-                    return "created";
-                }
-                throw new CacheException("NEW_TABLE 出错");
-            }
-
-            if (line.equals(CommandType.DEL_TABLE.getCmd())) {
-                line = reader.readLine();
-                if (line != null && !line.equals("")) {
-                    CacheDriver.removeTable(line);
-                    return "deleted";
-                }
-                throw new CacheException("DEL_TABLE 出错");
-            }
-
             if (line.equals(CommandType.SET.getCmd())) {
-                String tableName = reader.readLine();
-                if (tableName != null && !tableName.equals("")) {
-                    throw new CacheException("TABLE_NAME IS NULL");
-                }
                 String key = reader.readLine();
                 if (key != null && !key.equals("")) {
                     throw new CacheException("KEY IS NULL");
                 }
+
                 String value = reader.readLine();
-                CacheDriver.setData(tableName, key, value);
+                CacheDriver.setData(key, value);
                 return "ok";
             }
 
             if (line.equals(CommandType.GET.getCmd())) {
-                String tableName = reader.readLine();
-                if (tableName != null && !tableName.equals("")) {
-                    throw new CacheException("TABLE_NAME IS NULL");
-                }
                 String key = reader.readLine();
                 if (key != null && !key.equals("")) {
                     throw new CacheException("KEY IS NULL");
                 }
 
-                return CacheDriver.getData(tableName, key);
+                return CacheDriver.getData(key);
+            }
+
+            if (line.equals(CommandType.DELETE.getCmd())) {
+                String key = reader.readLine();
+                if (key != null && !key.equals("")) {
+                    throw new CacheException("KEY IS NULL");
+                }
+
+                CacheDriver.del(key);
+                return "ok";
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -11,5 +11,8 @@ public class ServiceApplication {
         SocketService socketService = new SocketService();
 
         socketService.init();
+
+
+
     }
 }

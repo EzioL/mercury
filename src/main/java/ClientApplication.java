@@ -16,9 +16,9 @@ public class ClientApplication {
         try {
             Socket socket = new Socket("127.0.0.1", 5489);
 
-            //String cmd = "*\r\n$HELLO\r\n";
+            String cmd = "*\r\n$HELLO\r\n";
 
-            String cmd = "*\r\n$NEW_TABLE\r\nccc\r\n";
+           // String cmd = "*\r\n$NEW_TABLE\r\nccc\r\n";
 
             OutputStream os = socket.getOutputStream();
             os.write(cmd.getBytes());

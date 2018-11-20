@@ -1,6 +1,6 @@
 package network;
 
-import cache.CommandService;
+import cache.CacheCommandService;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -19,7 +19,7 @@ public class SocketService {
     // socket服务
     private static ServerSocket serverSocket;
 
-    private CommandService commandService;
+    private CacheCommandService commandService;
 
     /**
      * 初始化socket服务
@@ -27,7 +27,7 @@ public class SocketService {
     public void init() {
 
         try {
-            commandService = new CommandService();
+            commandService = new CacheCommandService();
             serverSocket = new ServerSocket(SERVICE_PORT);
             System.out.println("启动服务器....");
 

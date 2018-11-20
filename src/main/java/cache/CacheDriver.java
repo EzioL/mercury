@@ -63,7 +63,7 @@ public class CacheDriver {
     /**
      * 删除表格
      */
-    public static void gdel(String key) {
+    public static void del(String key) {
         cache.invalidate(key);
     }
 }

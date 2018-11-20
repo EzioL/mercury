@@ -36,13 +36,13 @@ public class ClientApplication {
         Interceptor interceptor = new Interceptor() {
             @Override
             public boolean postRequestHandle(RequestContext context) throws Exception {
-                System.out.println("发现一个请求postRequestHandle: " + context);
+               // System.out.println("发现一个请求postRequestHandle: " + context);
                 return false;
             }
 
             @Override
             public boolean postResponseHandle(int command, Packet responsePacket) throws Exception {
-                System.out.println("收到一个包postResponseHandle: " + responsePacket);
+               // System.out.println("收到一个包postResponseHandle: " + responsePacket);
                 return false;
             }
         };
@@ -59,17 +59,16 @@ public class ClientApplication {
             e.printStackTrace();
         }
 
-        String json = "{\"key\" : \"myKey\",\"value\" : \"myValue\"}";
 
         ResponseHandler responseHandler = new ResponseHandler() {
             @Override
             public void sendSuccessMessage(int command, ByteString requestBody, Packet responsePacket) {
-                System.out.println("cmd: " + command + " ,requestBody: " + requestBody + " attach: " + " responsePacket: " + responsePacket);
+                System.err.println("cmd: " + command + " ,requestBody: " + requestBody + " attach: " + " responsePacket: " + responsePacket);
             }
 
             @Override
             public void sendFailureMessage(int command, Throwable error) {
-                System.out.println(command + " ,err: " + error);
+                System.err.println(command + " ,err: " + error);
             }
         };
 
@@ -93,6 +92,8 @@ public class ClientApplication {
         client.request(new Request.Builder().command(MercuryCommand.GET_DATA.getValue())
             .utf8body(new Gson().toJson(new MercuryGetDataRequest("myKey")))
             .build(), responseHandler);
+
+        Thread.sleep(2000L);
         client.disconnect();
     }
 

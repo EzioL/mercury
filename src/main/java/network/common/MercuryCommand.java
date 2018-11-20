@@ -13,7 +13,7 @@ public enum MercuryCommand {
 
     GET_DATA(400, "获取数据"),
 
-    DELETE_DATE(500, "删除数据"),
+    DELETE_DATA(500, "删除数据"),
 
     NOTIFY_DISCONNECT(3000, "服务器将要断连的通知")
     ;

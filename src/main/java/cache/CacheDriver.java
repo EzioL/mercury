@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class CacheDriver {
 
+
     final static Cache<String, String> cache = CacheBuilder.newBuilder()
         //设置cache的初始大小
         .initialCapacity(9999)
@@ -31,6 +32,7 @@ public class CacheDriver {
         //newTable("a");
         //JSONObject object = new JSONObject();
         //System.err.println(object.toJSONString());
+
 
     }
 

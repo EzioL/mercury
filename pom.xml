@@ -6,6 +6,7 @@
 
   <groupId>com.eizo</groupId>
   <artifactId>mercury</artifactId>
+  <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
   <build>
     <plugins>
@@ -19,6 +20,10 @@
       </plugin>
     </plugins>
   </build>
+
+  <modules>
+    <module>mercury-common</module>
+  </modules>
   <dependencies>
 
     <dependency>
@@ -26,7 +31,6 @@
       <artifactId>bizsocket-rx2</artifactId>
       <version>1.0</version>
     </dependency>
-
 
 
     <dependency>

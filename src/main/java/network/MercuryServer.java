@@ -115,6 +115,11 @@ public class MercuryServer {
                     packet.setResponse(new Gson().toJsonTree(Resp.success("delete success")).getAsJsonObject());
                     writePacket(packet);
                     break;
+
+                case NOTIFY_DISCONNECT:
+                    packet.setResponse(new Gson().toJsonTree(Resp.success("Bye")).getAsJsonObject());
+                    writePacket(packet);
+                    break;
             }
         }
 

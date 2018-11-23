@@ -8,8 +8,9 @@ public enum MercurySocketServerMode {
 
     CLASSIC_BASIC("CLASSIC", "Each socket handler may be started in its own thread"),
     CLASSIC_THREAD_POOL("CLASSIC", "Each socket handler may be started in its own thread"),
+    REACTOR_BASIC("BASIC_REACTOR", "I don't know what it is now."),
     REACTOR_MULTITHREADED("BASIC_REACTOR", "I don't know what it is now."),
-    REACTOR_BASIC("BASIC_REACTOR", "I don't know what it is now."),;
+    ;
 
     private String mode;
     private String desc;

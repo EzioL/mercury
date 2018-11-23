@@ -1,8 +1,7 @@
 package socket;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import socket.enmus.MercurySocketServerMode;
+import socket.factory.MercurySocketServerModeFactory;
 
 /**
  * Here be dragons
@@ -35,23 +34,17 @@ public class MercurySocketServerBuilder {
         return this;
     }
 
-    public MercurySocketServerBuilder build() throws IOException {
+    public MercurySocketServerBuilder build() {
 
-        MercuryServerSocket mercuryServerSocket = new MercuryServerSocket(this.port);
-        Socket accept = mercuryServerSocket.accept();
         switch (mode) {
             case CLASSIC_BASIC:
-
+                MercurySocketServerModeFactory.createClassicBasicHandler(port).run();
+                break;
+            case REACTOR_BASIC:
+                MercurySocketServerModeFactory.createReactorBasicHandler(port).run();
                 break;
         }
 
         return this;
-    }
-
-    private class MercuryServerSocket extends ServerSocket {
-
-        public MercuryServerSocket(int port) throws IOException {
-            super(port);
-        }
     }
 }

@@ -1,6 +1,7 @@
 package socket.factory;
 
 import socket.handler.ClassicMercurySocketServerHandler;
+import socket.handler.MercurySocketHandler;
 import socket.handler.MercurySocketServerHandler;
 import socket.handler.ReactorMercurySocketServerHandler;
 
@@ -12,8 +13,8 @@ import socket.handler.ReactorMercurySocketServerHandler;
  */
 public class MercurySocketServerModeFactory {
 
-    public static MercurySocketServerHandler createClassicBasicHandler(int port) {
-        return new ClassicMercurySocketServerHandler(port);
+    public static MercurySocketServerHandler createClassicBasicHandler(int port , MercurySocketHandler handler) {
+        return new ClassicMercurySocketServerHandler(port,handler);
     }
 
     public static MercurySocketServerHandler createReactorBasicHandler(int port) {

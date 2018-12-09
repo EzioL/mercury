@@ -46,13 +46,18 @@ public class MercurySocketServerBuilder {
         // TODO: 2018/11/26 not null校验
 
 
-
         switch (mode) {
             case CLASSIC_BASIC:
-                MercurySocketServerModeFactory.createClassicBasicHandler(port,mercurySocketHandler).run();
+                MercurySocketServerModeFactory.createClassicBasicHandler(port, mercurySocketHandler).run();
+                break;
+            case CLASSIC_THREAD_POOL:
                 break;
             case REACTOR_BASIC:
                 MercurySocketServerModeFactory.createReactorBasicHandler(port).run();
+                break;
+            case REACTOR_MULTITHREADED:
+                break;
+            default:
                 break;
         }
 

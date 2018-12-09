@@ -21,6 +21,7 @@ public class CacheDriver {
         //构建cache实例
         .build();
 
+
     public static void main(String[] args) throws Exception {
         //ArrayList<String> exts = Lists.newArrayList();
         //exts.add("json");

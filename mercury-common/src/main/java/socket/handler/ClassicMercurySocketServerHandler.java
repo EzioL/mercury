@@ -10,6 +10,8 @@ import socket.domain.MercuryServerSocket;
 /**
  * Here be dragons
  * Created by haotian on 2018/11/23 6:47 PM
+ *
+ * @author haotian
  */
 public class ClassicMercurySocketServerHandler extends MercurySocketServerHandler {
 
@@ -54,7 +56,7 @@ public class ClassicMercurySocketServerHandler extends MercurySocketServerHandle
         @Override
         public void run() {
             try {
-                System.out.println("accept: " + socket);
+                System.out.println(" ClassicMercurySocketServerHandler accept: " + socket);
                 reader = Okio.buffer(Okio.source(socket.getInputStream()));
                 writer = Okio.buffer(Okio.sink(socket.getOutputStream()));
                 while (isRunning) {

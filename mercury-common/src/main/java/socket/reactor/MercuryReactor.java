@@ -42,14 +42,12 @@ public class MercuryReactor implements Runnable {
         try {
             while (!Thread.interrupted()) {
                 selector.select();
-                Set selected = selector.selectedKeys();
-                Iterator iterator = selected.iterator();
-
+                Set<SelectionKey> selectedKeys = selector.selectedKeys();
+                Iterator<SelectionKey> iterator = selectedKeys.iterator();
                 while (iterator.hasNext()) {
-                    dispatch((SelectionKey) iterator.next());
+                    dispatch(iterator.next());
                 }
-
-                selected.clear();
+                selectedKeys.clear();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,7 +68,6 @@ public class MercuryReactor implements Runnable {
 
             try {
                 SocketChannel socketChannel = server.accept();
-
                 if (socketChannel != null) {
                     System.err.println("acceptor —> " + socketChannel);
                     new Handler(selector, socketChannel);
@@ -85,17 +82,15 @@ public class MercuryReactor implements Runnable {
 
         final SocketChannel socket;
         final SelectionKey selectionKey;
-        private int MAXIN = 1024 * 1;
-        private int MAXOUT = 1024 * 1;
+        private final int MAXIN = 1024;
+        private final int MAXOUT = 1024;
+        private int read = 0;
+
         ByteBuffer input = ByteBuffer.allocate(MAXIN);
 
         ByteBuffer output = ByteBuffer.allocate(MAXOUT);
 
-        static final int READING = 0, SENDING = 1;
-        int state = READING;
-
         public Handler(Selector selector, SocketChannel socketChannel) throws IOException {
-
             this.socket = socketChannel;
             socketChannel.configureBlocking(false);
             selectionKey = socketChannel.register(selector, 0);
@@ -105,7 +100,7 @@ public class MercuryReactor implements Runnable {
         }
 
         boolean inputIsComplete() {
-
+            System.err.println("read state ->" + read);
             return true;
         }
 
@@ -116,47 +111,76 @@ public class MercuryReactor implements Runnable {
 
         @Override
         public void run() {
-
             try {
-                if (state == READING) {
-                    read();
-                } else if (state == SENDING) {
-                    send();
+                read = socket.read(input);
+                if (inputIsComplete()) {
+                    process();
+                    selectionKey.attach(new Sender());
+                    selectionKey.interestOps(SelectionKey.OP_WRITE);
+                    selectionKey.selector().wakeup();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
-        private void read() throws IOException {
-
-            socket.read(input);
-            byte[] bytes = new byte[input.remaining()];
-            input.get(bytes);
-            System.err.println("Client send msg -> " + new String(bytes,"utf-8"));
-            if (inputIsComplete()) {
-                process();
-                state = SENDING;
-                // Normally also do first write now
-                selectionKey.interestOps(SelectionKey.OP_WRITE);
-            }
-        }
-
-        private void send() throws IOException {
-            socket.write(output);
-            if (outputIsComplete()) {
-                selectionKey.cancel();
-            }
-        }
-
         private void process() {
-
             try {
-                output.put("Hello Client".getBytes("UTF-8"));
 
+                String content = System.currentTimeMillis() + " 来自客户端的: ";
+                input.flip();
+                // =====取出buffer里的数据// 创建字节数组
+                byte[] bytes = new byte[input.remaining()];
+                // 将数据取出放到字节数组里
+                input.get(bytes);
+                content += new String(bytes, "UTF-8");
+                content += "--------";
+                System.out.println(content);
+
+                byte[] resp = "Hello Client".getBytes("UTF-8");
+
+                output = ByteBuffer.wrap(resp);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }
+
+        class Sender implements Runnable {
+
+            @Override public void run() {
+
+                try {
+
+                    socket.write(output);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (outputIsComplete()) {
+                    selectionKey.cancel();
+                }
+            }
+        }
+
+        //
+        //private void read() throws IOException {
+        //
+        //    socket.read(input);
+        //    byte[] bytes = new byte[input.remaining()];
+        //    input.get(bytes);
+        //    System.err.println("Client send msg -> " + new String(bytes, "utf-8"));
+        //    if (inputIsComplete()) {
+        //        process();
+        //        state = SENDING;
+        //        // Normally also do first write now
+        //        selectionKey.interestOps(SelectionKey.OP_WRITE);
+        //    }
+        //}
+        //
+        //private void send() throws IOException {
+        //    socket.write(output);
+        //    if (outputIsComplete()) {
+        //        selectionKey.cancel();
+        //    }
+        //}
     }
 }

@@ -101,7 +101,7 @@ public class ClientTest implements Runnable {
             byte[] bytes = new byte[buffer.remaining()];
             // 将数据取出放到字节数组里
             buffer.get(bytes);
-            content += new String(bytes, "utf-8");
+            content += new String(bytes, "UTF-8");
             content += "============";
             System.out.println(content);
             // doWrite(sc, content);

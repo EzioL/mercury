@@ -1,5 +1,6 @@
 package socket.reactor;
 
+import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -9,10 +10,10 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
+import socket.domain.MercuryPutDataRequest;
 
 /**
- * Here be dragons
- * Created by @author Ezio on 2018/12/9 7:55 PM
+ * Here be dragons Created by @author Ezio on 2018/12/9 7:55 PM
  */
 public class ClientTest implements Runnable {
 
@@ -89,7 +90,7 @@ public class ClientTest implements Runnable {
     private void handelReadable(SelectionKey key) throws IOException {
 
         SocketChannel sc = (SocketChannel) key.channel();
-        ByteBuffer buffer = ByteBuffer.allocate(1024);
+        ByteBuffer buffer = ByteBuffer.allocate(10);
         // 从channel读到buffer
         int temp = sc.read(buffer);
         String content = System.currentTimeMillis() + " 来自服务端的: ";
@@ -97,6 +98,7 @@ public class ClientTest implements Runnable {
         if (temp > 0) {
             // 为write()准备
             buffer.flip();
+
             // =====取出buffer里的数据// 创建字节数组
             byte[] bytes = new byte[buffer.remaining()];
             // 将数据取出放到字节数组里
@@ -113,7 +115,10 @@ public class ClientTest implements Runnable {
         if (socketChannel.finishConnect()) {
             // 将关注的事件变成read
             socketChannel.register(selector, SelectionKey.OP_READ);
-            doWrite(socketChannel, "Hello Server");
+            //  doWrite(socketChannel, "Hello Server");
+            String s = new Gson().toJson(new MercuryPutDataRequest("myKey", "myValue"));
+            doWrite(socketChannel, s);
+            ;
         }
     }
 

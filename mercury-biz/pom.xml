@@ -14,9 +14,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>com.eizo</groupId>
-      <artifactId>mercury-common</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <groupId>top.dannystone</groupId>
+      <artifactId>bizsocket-rx2</artifactId>
+      <version>1.0</version>
     </dependency>
   </dependencies>
 

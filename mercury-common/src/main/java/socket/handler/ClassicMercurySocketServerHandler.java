@@ -21,6 +21,7 @@ public class ClassicMercurySocketServerHandler extends MercurySocketServerHandle
 
     private int port;
 
+
     public ClassicMercurySocketServerHandler(int port, MercurySocketHandler handler) {
         this.port = port;
         this.mercurySocketHandler = handler;

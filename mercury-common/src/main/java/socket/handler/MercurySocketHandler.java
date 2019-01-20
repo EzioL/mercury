@@ -13,4 +13,6 @@ public interface MercurySocketHandler {
      * @param socket
      */
     void handle(Socket socket);
+
+
 }
